@@ -6,9 +6,10 @@
 
 export type { PageMeta } from './DocumentRepository'
 
-// Dynamic import at module level keeps both implementations tree-shakeable
+// Use NEXT_PUBLIC_SUPABASE_URL as the condition so webpack can evaluate it
+// at build time and tree-shake the unused implementation.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const impl = process.env.USE_SUPABASE === 'true'
+const impl = process.env.NEXT_PUBLIC_SUPABASE_URL
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   ? require('./DocumentRepository.supabase')
   // eslint-disable-next-line @typescript-eslint/no-require-imports
