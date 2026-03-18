@@ -1,0 +1,392 @@
+/*
+ * ATELIER — Oil Paint Physical Layer v4
+ * 「デジタル空間の中に、油絵の具が存在している」
+ */
+
+/* ── 1. Tokens ── */
+:root {
+  --color-bg:           #F6F4F1;
+  --color-surface:      #F9F8F5;
+  --color-surface-2:    #EFECEA;
+  --color-surface-3:    #E6E2DC;
+
+  --color-text-primary:   rgba(22, 18, 14, 0.86);
+  --color-text-secondary: rgba(22, 18, 14, 0.40);
+  --color-text-tertiary:  rgba(22, 18, 14, 0.23);
+  --color-text-ghost:     rgba(22, 18, 14, 0.12);
+
+  --color-border:       rgba(22, 18, 14, 0.062);
+  --color-border-soft:  rgba(22, 18, 14, 0.036);
+  --color-divider:      rgba(22, 18, 14, 0.046);
+
+  --color-accent:       #7A2F24;
+  --color-accent-light: rgba(122, 47, 36, 0.07);
+  --color-accent-mid:   rgba(122, 47, 36, 0.18);
+
+  --color-danger:  rgba(148, 44, 36, 0.80);
+  --color-warning: rgba(148, 100, 32, 0.72);
+  --color-success: rgba(48, 96, 58, 0.72);
+
+  --font-ui:   -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', monospace;
+
+  --shadow-sm:     none;
+  --shadow-md:     none;
+  --shadow-lg:     none;
+  --shadow-panel:  1px 0 0 var(--color-border);
+  --topbar-height: 48px;
+  --canvas-padding: 72px;
+}
+
+/* ── 2. Base — 空白を死なせない微弱な下地 ── */
+html, body {
+  -webkit-font-smoothing: antialiased;
+}
+
+body { background: #F6F4F1; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAINT — LOCAL ONLY (RULE 2 compliant)
+   Canvas右上コーナーに限定。全画面に広がらない。
+   ─────────────────────────────────────────────────────────────────────────
+   実装: .atelier-canvas-root::before
+   - position: absolute (not fixed)
+   - 幅・高さ: 320px × 280px
+   - right:0 top:0 に配置 → Canvas の右上コーナーのみ
+   - overflow はキャンバスルートに任せる
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes oilPulse {
+  0%   { transform: translate(0, 0) scale(1.00); opacity: 0.82; }
+  50%  { transform: translate(3px, -2px) scale(1.01); opacity: 0.75; }
+  100% { transform: translate(0, 0) scale(1.00); opacity: 0.82; }
+}
+
+.atelier-canvas-root {
+  position: relative;
+}
+
+.atelier-canvas-root::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 320px;
+  height: 280px;
+  pointer-events: none;
+  z-index: 0;
+
+  background:
+    radial-gradient(circle at 65% 30%,
+      rgba(122, 47, 36, 0.72) 0%,
+      rgba(140, 58, 43, 0.52) 18%,
+      transparent 42%
+    ),
+    radial-gradient(circle at 72% 25%,
+      rgba(255, 255, 255, 0.14) 0%,
+      transparent 28%
+    ),
+    radial-gradient(circle at 58% 38%,
+      rgba(0, 0, 0, 0.18) 0%,
+      transparent 40%
+    ),
+    radial-gradient(circle at 78% 35%,
+      rgba(106, 90, 79, 0.32) 0%,
+      transparent 55%
+    ),
+    radial-gradient(circle at 62% 28%,
+      rgba(130, 50, 40, 0.22),
+      transparent 50%
+    );
+
+  filter: blur(26px);
+  animation: oilPulse 18s ease-in-out infinite;
+}
+
+/* NOISE: removed full-screen body::after — RULE 1 violation fixed */
+
+/* 既存bgアートを無効化 */
+.atelier-bg-art::before,
+.atelier-bg-art::after { display: none; }
+
+/* ── 5. UI SUPPRESSION — UIを消す。絵の具を前に出す ── */
+
+.atelier-topbar,
+.atelier-topbar-light {
+  height:          var(--topbar-height);
+  background:      rgba(246, 244, 241, 0.82);
+  border-bottom:   1px solid var(--color-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.atelier-topbar__logo,
+.atelier-topbar-light .logo-mark {
+  font-size:      10px;
+  font-weight:    500;
+  letter-spacing: 0.20em;
+  opacity:        0.32;
+}
+
+.atelier-topbar__title,
+.atelier-topbar-light .page-title {
+  font-size:   12px;
+  font-weight: 400;
+  opacity:     0.42;
+}
+
+.atelier-panel {
+  background:   rgba(246, 244, 241, 0.55);
+  border-right: 1px solid var(--color-border);
+}
+
+.atelier-panel-tabs {
+  background:    transparent;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.atelier-panel-tab {
+  font-size:      10px;
+  letter-spacing: 0.05em;
+  color:          var(--color-text-ghost);
+}
+.atelier-panel-tab:hover     { color: var(--color-text-tertiary); background: transparent; }
+.atelier-panel-tab.is-active {
+  color:               var(--color-text-secondary);
+  border-bottom-color: var(--color-accent);
+  background:          transparent;
+}
+
+.atelier-panel-content { background: transparent; }
+.atelier-panel-section  { border-bottom: 1px solid var(--color-border); }
+.atelier-panel-label,
+.atelier-right-panel .panel-label {
+  font-size:      9px;
+  letter-spacing: 0.13em;
+  color:          var(--color-text-ghost);
+}
+
+.atelier-tabs {
+  background:    transparent;
+  border-bottom: 1px solid var(--color-border);
+  height:        36px;
+}
+.atelier-tab {
+  font-size:      10px;
+  letter-spacing: 0.04em;
+  color:          var(--color-text-ghost);
+  border-bottom:  1.5px solid transparent;
+}
+.atelier-tab:hover  { color: var(--color-text-tertiary); }
+.atelier-tab.active { color: var(--color-text-secondary); border-bottom-color: var(--color-accent); }
+.atelier-tab-group-sep { display: none; }
+
+/* Canvas — 絵の具が透けて見える */
+.atelier-canvas-root,
+.atelier-canvas-area {
+  background: transparent !important;
+}
+.atelier-canvas-atmosphere {
+  background: transparent !important;
+}
+.atelier-page-well {
+  background: rgba(249, 248, 245, 0.48);
+  box-shadow: none;
+  border:     none;
+  max-width:  840px;
+  padding:    var(--canvas-padding) 60px;
+}
+
+[data-block-id]:hover {
+  outline-color: rgba(122, 47, 36, 0.15);
+  outline-style: solid;
+  outline-width: 1.5px;
+}
+[data-block-id].is-selected {
+  outline-color: rgba(122, 47, 36, 0.40);
+  outline-style: solid;
+  outline-width: 1.5px;
+}
+[data-section-id] { border-color: transparent !important; }
+
+/* ── 6. PRIMARY BUTTON — 触れる物質 ──
+ * 内部に光と影を持つ厚みのある物体。
+ * hover: 明度がわずかに上がり、わずかに浮く。湿る感じ。
+ */
+.atelier-btn--primary {
+  background:
+    linear-gradient(135deg, #7A2F24, #6A5A4F);
+  border-color: transparent;
+  color:        rgba(248, 245, 240, 0.95);
+  font-weight:  500;
+  box-shadow:
+    inset 0 3px 6px rgba(255, 255, 255, 0.15),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.30);
+  transition: all 0.4s ease;
+}
+.atelier-btn--primary:hover {
+  filter:    brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 3px 6px rgba(255, 255, 255, 0.18),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.25);
+}
+.atelier-btn--primary:disabled {
+  opacity: 0.33;
+  cursor:  not-allowed;
+  transform: none;
+}
+
+.atelier-btn {
+  background:     transparent;
+  border-color:   var(--color-border);
+  color:          var(--color-text-secondary);
+  border-radius:  6px;
+  font-family:    var(--font-ui);
+  font-size:      11px;
+  font-weight:    400;
+  box-shadow:     none;
+  transition:     background 200ms ease, border-color 200ms ease;
+}
+.atelier-btn:hover {
+  background:   rgba(22, 18, 14, 0.065);
+  border-color: rgba(22, 18, 14, 0.11);
+  box-shadow:   none;
+  transform:    none;
+}
+
+.atelier-btn--ghost {
+  color: var(--color-text-ghost);
+}
+.atelier-btn--ghost:hover {
+  background: rgba(22, 18, 14, 0.05);
+  color:      var(--color-text-tertiary);
+}
+
+.atelier-suggestion {
+  background:    rgba(249, 248, 245, 0.42);
+  border:        1px solid var(--color-border-soft);
+  border-radius: 6px;
+}
+.atelier-suggestion:hover {
+  border-color: var(--color-border);
+  box-shadow:   none;
+}
+
+input, select, textarea {
+  background:    rgba(22, 18, 14, 0.04);
+  border:        1px solid var(--color-border);
+  color:         var(--color-text-primary);
+  border-radius: 6px;
+  font-family:   var(--font-ui);
+}
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(122, 47, 36, 0.36);
+  outline:      none;
+  box-shadow:   0 0 0 3px rgba(122, 47, 36, 0.06);
+}
+
+.atelier-preview-banner {
+  background:    rgba(246, 244, 241, 0.92);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(8px);
+}
+.atelier-preview-banner--ai {
+  border-bottom-color: rgba(122, 47, 36, 0.24);
+}
+
+/* ── 7. Inline overrides ── */
+[style*="background: #0F0F14"],[style*="background:#0F0F14"],
+[style*="background: #0B0B10"],[style*="background:#0B0B10"],
+[style*="background: #111114"],[style*="background:#111114"],
+[style*="background: #13131C"],[style*="background:#13131C"],
+[style*="background: #0E0E10"],[style*="background:#0E0E10"],
+[style*="background: #131315"],[style*="background:#131315"] {
+  background: var(--color-surface) !important;
+  color: var(--color-text-primary) !important;
+}
+
+[style*="color: #C8C4BC"],[style*="color:#C8C4BC"],
+[style*="color: #E8E4DC"],[style*="color:#E8E4DC"] {
+  color: var(--color-text-primary) !important;
+}
+[style*="color: #7A7870"],[style*="color:#7A7870"],
+[style*="color: #4A4844"],[style*="color:#4A4844"] {
+  color: var(--color-text-secondary) !important;
+}
+[style*="color: #3A3834"],[style*="color:#3A3834"],
+[style*="color: #2A2824"],[style*="color:#2A2824"] {
+  color: var(--color-text-ghost) !important;
+}
+
+/* ── 8. Scrollbars ── */
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INK SYSTEM
+   動きの痕跡としてのインク。装飾ではなく運動の記憶。
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── インクストローク — 基本形 ── */
+@keyframes inkBreath {
+  0%   { transform: rotate(var(--rot, -12deg)) translate(0,0); }
+  50%  { transform: rotate(calc(var(--rot, -12deg) + 1deg)) translate(2px,-2px); }
+  100% { transform: rotate(var(--rot, -12deg)) translate(0,0); }
+}
+
+.ink-stroke {
+  pointer-events: none;
+  z-index: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(122, 47, 36, 0.00) 0%,
+      rgba(122, 47, 36, 0.72) 15%,
+      rgba(140, 58, 43, 0.55) 40%,
+      rgba(106, 42, 30, 0.30) 65%,
+      rgba(122, 47, 36, 0.08) 85%,
+      transparent 100%
+    );
+
+  /* 縁を少しぼかして「乾いた筆跡」に。blur過多はNG */
+  filter: blur(2.5px);
+
+  border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
+
+  animation: inkBreath 16s ease-in-out infinite;
+}
+
+/* ── ボタン — インクが通り抜ける ── */
+@keyframes inkSwipe {
+  0%   { transform: translateX(-120%) rotate(-10deg); opacity: 0; }
+  40%  { opacity: 0.55; }
+  100% { transform: translateX(120%) rotate(-10deg); opacity: 0; }
+}
+
+.atelier-btn--primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.atelier-btn--primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      110deg,
+      rgba(122, 47, 36, 0.00) 0%,
+      rgba(255, 220, 190, 0.30) 30%,
+      rgba(255, 200, 160, 0.18) 50%,
+      rgba(122, 47, 36, 0.00) 80%
+    );
+  transform: translateX(-120%) rotate(-10deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.atelier-btn--primary:hover::after {
+  animation: inkSwipe 0.8s ease-out forwards;
+}

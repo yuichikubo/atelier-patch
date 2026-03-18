@@ -1,0 +1,22 @@
+{
+  "home-dev-001": {
+    "id": "home-dev-001",
+    "title": "ATELIER — AI-Native CMS",
+    "slug": "home",
+    "status": "draft",
+    "workspaceId": "dev-workspace",
+    "version": 3,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "mmvrifgq5frs1l8": {
+    "id": "mmvrifgq5frs1l8",
+    "title": "タイトル",
+    "slug": "test",
+    "status": "draft",
+    "workspaceId": "dev-workspace",
+    "version": 6,
+    "createdAt": "2026-03-18T08:11:22.442Z",
+    "updatedAt": "2026-03-18T08:44:04.772Z"
+  }
+}

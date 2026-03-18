@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Build artifacts
+tsconfig.tsbuildinfo
+
+# Environment variables (never commit secrets)
+.env.local
+.env.production
+.env*.local
+
+# Data (local filesystem storage — not for production)
+data/pages/
+data/versions/
+data/timelines/
+data/ai/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Vercel
+.vercel
+
+# Claude Code
+.claude/
