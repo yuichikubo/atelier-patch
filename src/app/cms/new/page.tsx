@@ -80,7 +80,7 @@ export default function NewPagePage() {
     e.preventDefault()
     if (!title.trim()||!slug.trim()) { setErr('タイトルとスラッグは必須です'); return }
     setBusy(true)
-    const res = await fetch('/api/pages',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ title:title.trim(), slug:slug.trim() }) })
+    const res = await fetch('/api/pages',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ title:title.trim(), slug:slug.trim(), templateId: selectedTemplate }) })
     if (!res.ok) { const b=await res.json().catch(()=>({})); setErr((b as any).error??'Error'); setBusy(false); return }
     const page = await res.json(); router.push(`/cms/${page.id}`)
   }
