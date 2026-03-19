@@ -312,7 +312,20 @@ export function Sidebar({
   const { addBlockFromDefinition } = useAddBlock()
 
   const handleBlockSelect = useCallback((_type: string, def: BlockTypeDefinition) => {
-    addBlockFromDefinition(def)
+    const result = addBlockFromDefinition(def)
+    if (result.ok) {
+      // Scroll to the newly added block after React commits the DOM update.
+      // Two nested rAFs: first waits for React's render, second for the paint.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const scroll = document.querySelector('.atelier-canvas-scroll')
+          const blocks = scroll?.querySelectorAll('[data-block-id]')
+          if (blocks && blocks.length > 0) {
+            blocks[blocks.length - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+          }
+        })
+      })
+    }
   }, [addBlockFromDefinition])
 
   const TABS: { id: SidebarTab; label: string }[] = [

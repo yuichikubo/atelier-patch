@@ -415,7 +415,8 @@ export function EditorCanvas() {
     () => normalizeSections(engine.getDocument().sections)
   )
 
-  React.useEffect(() => engine.subscribe(d => {
+  React.useEffect(() => {
+    return engine.subscribe(d => {
     const newOrder = [...d.sections].sort((a, b) => a.order - b.order).map(s => s.id)
 
     setNorm(prev => {
@@ -448,7 +449,8 @@ export function EditorCanvas() {
       if (!changed) return prev
       return { byId, order: newOrder, fingerprints: prints }
     })
-  }), [])
+  })
+  }, [])
 
   // ── AI preview ───────────────────────────────────────────────────────────
   const aiPreviewActive = useAIPreviewStore(s => s.active)
