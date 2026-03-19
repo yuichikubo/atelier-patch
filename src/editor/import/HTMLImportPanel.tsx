@@ -214,12 +214,12 @@ export function HTMLImportPanel() {
         <div style={{ textAlign:'center', padding:'24px 0', display:'flex', flexDirection:'column', gap:12, alignItems:'center' }}>
           <div style={{ fontSize:28 }}>✓</div>
           <div style={S.success}>
-            Import complete.
+            インポート完了！
             <br />
-            Your content is now in the canvas.
+            コンテンツがキャンバスに追加されました。
           </div>
           <button style={S.btnSecondary} onClick={handleReset}>
-            Import another page
+            別のHTMLをインポート
           </button>
         </div>
       </div>
@@ -232,11 +232,10 @@ export function HTMLImportPanel() {
       {/* Header */}
       <div>
         <div style={{ fontSize:11, fontWeight:600, color:'var(--color-text-primary)', marginBottom:4 }}>
-          Import HTML
+          HTMLをインポート
         </div>
         <div style={{ fontSize:10, color:'var(--color-text-tertiary)', lineHeight:1.6 }}>
-          Paste HTML from an AI generator, website builder, or any external source.
-          It will be converted into editable blocks.
+          AIツールやWebサイトビルダーで生成したHTMLを貼り付けると、編集可能なブロックに変換されます。
         </div>
       </div>
 
@@ -244,7 +243,7 @@ export function HTMLImportPanel() {
 
       {/* HTML textarea */}
       <div>
-        <div style={S.label}>HTML source</div>
+        <div style={S.label}>HTMLソース</div>
         <textarea
           style={S.textarea}
           value={html}
@@ -271,11 +270,11 @@ export function HTMLImportPanel() {
       {panelState === 'preview' && preview && (
         <div style={S.previewBox}>
           <div style={{ fontWeight:600, marginBottom:6, color:'var(--color-text-primary)' }}>
-            Ready to import
+            インポート準備完了
           </div>
           <div style={{ color:'var(--color-text-secondary)', lineHeight:1.8 }}>
-            <span style={{ color:'var(--color-accent)', fontWeight:600 }}>{preview.sections}</span> section{preview.sections !== 1 ? 's' : ''},&nbsp;
-            <span style={{ color:'var(--color-accent)', fontWeight:600 }}>{preview.blocks}</span> block{preview.blocks !== 1 ? 's' : ''}
+            <span style={{ color:'var(--color-accent)', fontWeight:600 }}>{preview.sections}</span> セクション、&nbsp;
+            <span style={{ color:'var(--color-accent)', fontWeight:600 }}>{preview.blocks}</span> ブロック
           </div>
           {preview.warnings.length > 0 && (
             <div style={{ ...S.warning, marginTop:8, borderTop:'1px solid var(--color-divider)', paddingTop:8 }}>
@@ -297,7 +296,7 @@ export function HTMLImportPanel() {
           disabled={!html.trim()}
           onClick={handlePreview}
         >
-          Analyse HTML
+          HTMLを解析
         </button>
       ) : panelState === 'preview' ? (
         <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
@@ -305,22 +304,22 @@ export function HTMLImportPanel() {
             style={S.btnPrimary}
             onClick={handleImport}
           >
-            ✦ Import into canvas
+            ✦ キャンバスにインポート
           </button>
           <button style={S.btnSecondary} onClick={handleReset}>
-            Cancel
+            キャンセル
           </button>
         </div>
       ) : panelState === 'importing' ? (
         <button style={{ ...S.btnPrimary, opacity:0.6 }} disabled>
-          Importing…
+          インポート中…
         </button>
       ) : null}
 
       {/* Note */}
       <div style={{ fontSize:10, color:'var(--color-text-ghost)', lineHeight:1.6 }}>
-        Import creates new sections at the end of the current page.
-        The action can be undone with ⌘Z.
+        インポートしたコンテンツはページ末尾に追加されます。
+        ⌘Z で元に戻せます。
       </div>
 
     </div>

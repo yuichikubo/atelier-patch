@@ -118,13 +118,13 @@ function SectionList() {
 
   return (
     <div style={{ padding: '10px 12px', fontFamily: 'var(--font-ui)' }}>
-      <div style={{ fontSize: 9, color: '#4A4844', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 10 }}>
-        Sections ({sorted.length})
+      <div style={{ fontSize: 9, color: '#9A9490', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 10 }}>
+        セクション ({sorted.length})
       </div>
 
       {sorted.length === 0 && (
         <div style={{ fontSize: 11, color: '#2A2824', textAlign: 'center', padding: '24px 0' }}>
-          No sections yet
+          セクションがありません
         </div>
       )}
 
@@ -137,18 +137,18 @@ function SectionList() {
             gap:          4,
             padding:      '6px 8px',
             borderRadius: 7,
-            background:   '#13131A',
+            background:   '#FFFFFF',
             marginBottom: 4,
-            border:       '1px solid rgba(255,255,255,0.04)',
+            border:       '1px solid rgba(0,0,0,0.07)',
           }}
         >
           {/* Info */}
           <div style={{ flex: 1, overflow: 'hidden', minWidth: 0 }}>
-            <div style={{ fontSize: 10, color: '#C8C4BC', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+            <div style={{ fontSize: 10, color: '#2C2A28', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
               {s.label || s.type}
             </div>
-            <div style={{ fontSize: 8, color: '#3A3834', marginTop: 1 }}>
-              {s.blocks.length} block{s.blocks.length !== 1 ? 's' : ''}
+            <div style={{ fontSize: 8, color: '#B0A898', marginTop: 1 }}>
+              {s.blocks.length}ブロック
             </div>
           </div>
 
@@ -160,7 +160,7 @@ function SectionList() {
               title="上へ"
               style={{
                 background: 'none', border: 'none', fontFamily: 'var(--font-ui)',
-                color: i === 0 ? '#2A2824' : '#5A5854',
+                color: i === 0 ? '#CCCCCC' : '#8A8480',
                 cursor: i === 0 ? 'default' : 'pointer',
                 fontSize: 11, padding: '2px 4px', lineHeight: 1,
               }}
@@ -171,7 +171,7 @@ function SectionList() {
               title="下へ"
               style={{
                 background: 'none', border: 'none', fontFamily: 'var(--font-ui)',
-                color: i === sorted.length - 1 ? '#2A2824' : '#5A5854',
+                color: i === sorted.length - 1 ? '#CCCCCC' : '#8A8480',
                 cursor: i === sorted.length - 1 ? 'default' : 'pointer',
                 fontSize: 11, padding: '2px 4px', lineHeight: 1,
               }}
@@ -204,7 +204,7 @@ function SectionList() {
           fontSize:     10,
         }}
       >
-        + Add section
+        ＋ セクションを追加
       </button>
     </div>
   )
@@ -234,36 +234,36 @@ function PagesTab({ pagesHref }: { pagesHref: string }) {
           letterSpacing:  '0.04em',
         }}
       >
-        ← All pages
+        ← ページ一覧へ
       </a>
 
       {/* Current page info */}
-      <div style={{ fontSize: 9, color: '#4A4844', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 10 }}>
-        Current page
+      <div style={{ fontSize: 9, color: '#9A9490', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 10 }}>
+        現在のページ
       </div>
 
       <div
         style={{
           padding:      '10px 12px',
-          background:   '#13131A',
+          background:   '#FFFFFF',
           borderRadius: 8,
-          border:       '1px solid rgba(255,255,255,0.04)',
+          border:       '1px solid rgba(0,0,0,0.07)',
         }}
       >
-        <div style={{ fontSize: 12, color: '#C8C4BC', marginBottom: 4, fontWeight: 500 }}>
+        <div style={{ fontSize: 12, color: '#2C2A28', marginBottom: 4, fontWeight: 500 }}>
           {doc.title || 'Untitled'}
         </div>
-        <div style={{ fontSize: 9, color: '#4A4844', marginBottom: 6 }}>
+        <div style={{ fontSize: 9, color: '#9A9490', marginBottom: 6 }}>
           /{doc.slug || '—'}
         </div>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{
             fontSize: 9, padding: '2px 8px', borderRadius: 20,
-            background: doc.status === 'published' ? 'rgba(74,222,128,0.1)' : 'rgba(255,255,255,0.05)',
-            color:      doc.status === 'published' ? '#4ade80' : '#5A5854',
-            border:     doc.status === 'published' ? '1px solid rgba(74,222,128,0.2)' : '1px solid rgba(255,255,255,0.06)',
+            background: doc.status === 'published' ? 'rgba(34,197,94,0.1)' : 'rgba(0,0,0,0.05)',
+            color:      doc.status === 'published' ? '#16a34a' : '#8A8480',
+            border:     doc.status === 'published' ? '1px solid rgba(34,197,94,0.25)' : '1px solid rgba(0,0,0,0.08)',
           }}>
-            {doc.status}
+            {doc.status === 'published' ? '公開済み' : doc.status === 'draft' ? '下書き' : doc.status}
           </span>
           {doc.themeId && (
             <span style={{
@@ -275,16 +275,16 @@ function PagesTab({ pagesHref }: { pagesHref: string }) {
               {doc.themeId}
             </span>
           )}
-          <span style={{ fontSize: 9, color: '#3A3834' }}>
+          <span style={{ fontSize: 9, color: '#B0A898' }}>
             v{doc.version}
           </span>
         </div>
       </div>
 
       {/* Section summary */}
-      <div style={{ marginTop: 16, fontSize: 9, color: '#3A3834', lineHeight: 1.8 }}>
-        <div>{doc.sections.length} section{doc.sections.length !== 1 ? 's' : ''}</div>
-        <div>{doc.sections.reduce((n, s) => n + s.blocks.length, 0)} total blocks</div>
+      <div style={{ marginTop: 16, fontSize: 9, color: '#B0A898', lineHeight: 1.8 }}>
+        <div>{doc.sections.length} セクション</div>
+        <div>{doc.sections.reduce((n, s) => n + s.blocks.length, 0)} ブロック（合計）</div>
       </div>
     </div>
   )
@@ -318,8 +318,8 @@ export function Sidebar({
   const TABS: { id: SidebarTab; label: string }[] = [
     { id: 'blocks',   label: 'ブロック' },
     { id: 'sections', label: 'セクション' },
-    { id: 'import',   label: 'Import' },
-    ...(showPagesLink ? [{ id: 'pages' as SidebarTab, label: 'Pages' }] : []),
+    { id: 'import',   label: 'インポート' },
+    ...(showPagesLink ? [{ id: 'pages' as SidebarTab, label: 'ページ' }] : []),
   ]
 
   return (
@@ -329,7 +329,7 @@ export function Sidebar({
         flexDirection: 'column',
         height:        '100%',
         overflow:      'hidden',
-        background:    '#0F0F14',
+        background:    '#F8F5F0',
         ...style,
       }}
     >
@@ -338,7 +338,7 @@ export function Sidebar({
         style={{
           display:      'flex',
           flexShrink:   0,
-          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          borderBottom: '1px solid rgba(0,0,0,0.07)',
         }}
       >
         {TABS.map(t => (
@@ -347,7 +347,7 @@ export function Sidebar({
             onClick={() => setTab(t.id)}
             style={{
               ...TAB_BASE,
-              color:        tab === t.id ? '#C9A84C' : '#4A4844',
+              color:        tab === t.id ? '#B8903C' : '#9A9490',
               borderBottom: tab === t.id ? '2px solid #C9A84C' : '2px solid transparent',
             }}
           >

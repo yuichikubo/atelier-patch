@@ -83,7 +83,7 @@ const S = {
     display:       'flex',
     flexDirection: 'column',
     height:        '100%',
-    background:    '#0F0F14',
+    background:    '#F8F5F0',
     fontFamily:    'var(--font-ui)',
     overflow:      'hidden',
   } as React.CSSProperties,
@@ -95,11 +95,11 @@ const S = {
 
   searchInput: {
     width:        '100%',
-    background:   '#0B0B10',
-    border:       '1px solid rgba(255,255,255,0.07)',
+    background:   '#FFFFFF',
+    border:       '1px solid rgba(0,0,0,0.10)',
     borderRadius: 8,
     padding:      '7px 10px',
-    color:        '#E8E4DC',
+    color:        '#2C2A28',
     fontFamily:   'var(--font-ui)',
     fontSize:     11,
     outline:      'none',
@@ -108,7 +108,7 @@ const S = {
 
   catBar: {
     display:        'flex',
-    borderBottom:   '1px solid rgba(255,255,255,0.05)',
+    borderBottom:   '1px solid rgba(0,0,0,0.07)',
     flexShrink:     0,
   } as React.CSSProperties,
 
@@ -122,7 +122,7 @@ const S = {
     border:        'none',
     cursor:        'pointer',
     fontFamily:    'var(--font-ui)',
-    color:         active ? '#C9A84C' : '#3A3834',
+    color:         active ? '#B8903C' : '#9A9490',
     borderBottom:  active ? '2px solid #C9A84C' : '2px solid transparent',
     transition:    'color 0.12s, border-color 0.12s',
   }),
@@ -135,7 +135,7 @@ const S = {
 
   catHeading: {
     fontSize:      8,
-    color:         '#3A3834',
+    color:         '#B0A898',
     letterSpacing: '0.18em',
     textTransform: 'uppercase',
     padding:       '10px 4px 5px',
@@ -148,10 +148,10 @@ const S = {
     width:         '100%',
     padding:       '9px 10px',
     marginBottom:  3,
-    background:    hovered ? 'rgba(201,168,76,0.07)' : 'rgba(255,255,255,0.02)',
+    background:    hovered ? 'rgba(201,168,76,0.08)' : 'rgba(0,0,0,0.02)',
     border:        hovered
-                     ? '1px solid rgba(201,168,76,0.22)'
-                     : '1px solid rgba(255,255,255,0.04)',
+                     ? '1px solid rgba(201,168,76,0.30)'
+                     : '1px solid rgba(0,0,0,0.07)',
     borderRadius:  9,
     cursor:        'pointer',
     textAlign:     'left',
@@ -174,7 +174,7 @@ const S = {
 
   blockLabel: {
     fontSize:   11,
-    color:      '#C8C4BC',
+    color:      '#2C2A28',
     fontWeight: 500,
     display:    'block',
     lineHeight: 1.3,
@@ -182,7 +182,7 @@ const S = {
 
   blockDesc: {
     fontSize:     9,
-    color:        '#4A4844',
+    color:        '#9A9490',
     marginTop:    2,
     lineHeight:   1.5,
     overflow:     'hidden',
@@ -192,14 +192,14 @@ const S = {
 
   arrow: {
     fontSize:   10,
-    color:      '#3A3834',
+    color:      '#B8903C',
     flexShrink:  0,
   } as React.CSSProperties,
 
   empty: {
     padding:    '32px 16px',
     textAlign:  'center',
-    color:      '#2A2824',
+    color:      '#BBBBBB',
     fontSize:   11,
     lineHeight: 1.7,
   } as React.CSSProperties,
@@ -280,10 +280,10 @@ export function BlockLibrary({
   const groupedBlocks = useMemo(() => {
     const groups: Array<{ category: BlockCategory; label: string; blocks: BlockTypeDefinition[] }> = []
     const CATEGORY_LABELS: Record<BlockCategory, string> = {
-      layout:  'Layout',
-      content: 'Content',
-      media:   'Media',
-      data:    'Data',
+      layout:  'レイアウト',
+      content: 'コンテンツ',
+      media:   'メディア',
+      data:    'データ',
     }
 
     const categories = BLOCK_CATEGORIES.filter(c =>
@@ -326,7 +326,7 @@ export function BlockLibrary({
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Search blocks…"
+            placeholder="ブロックを検索…"
             style={S.searchInput}
             aria-label="Search block library"
           />
@@ -342,7 +342,7 @@ export function BlockLibrary({
             style={S.catBtn(activeCategory === 'all')}
             onClick={() => setActiveCategory('all')}
           >
-            All
+            すべて
           </button>
           {availableCats.map(cat => (
             <button
@@ -352,7 +352,7 @@ export function BlockLibrary({
               style={S.catBtn(activeCategory === cat)}
               onClick={() => setActiveCategory(cat)}
             >
-              {(cat as string) === 'feature-list' ? 'feat.' : cat}
+              {(cat as string) === 'layout' ? 'レイアウト' : (cat as string) === 'content' ? 'コンテンツ' : (cat as string) === 'media' ? 'メディア' : (cat as string) === 'data' ? 'データ' : cat}
             </button>
           ))}
         </div>
@@ -364,7 +364,7 @@ export function BlockLibrary({
         {visibleBlocks.length === 0 && (
           <div style={S.empty}>
             <div style={{ fontSize: 28, marginBottom: 8, opacity: 0.3 }}>◈</div>
-            No blocks match<br />
+            ブロックが見つかりません<br />
             <span style={{ color: '#C9A84C', fontSize: 10 }}>"{search}"</span>
           </div>
         )}

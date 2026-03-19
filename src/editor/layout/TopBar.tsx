@@ -87,7 +87,7 @@ function IconButton({
       style={{
         background:  'none',
         border:      'none',
-        color:       disabled ? '#2A2824' : '#7A7870',
+        color:       disabled ? '#CCCCCC' : '#8A8480',
         cursor:      disabled ? 'default' : 'pointer',
         fontSize:    12,
         fontFamily:  'var(--font-ui)',
@@ -96,8 +96,8 @@ function IconButton({
         lineHeight:  1,
         transition:  'color 0.12s',
       }}
-      onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.color = '#C8C4BC' }}
-      onMouseLeave={e => { if (!disabled) (e.currentTarget as HTMLElement).style.color = '#7A7870' }}
+      onMouseEnter={e => { if (!disabled) (e.currentTarget as HTMLElement).style.color = '#2C2A28' }}
+      onMouseLeave={e => { if (!disabled) (e.currentTarget as HTMLElement).style.color = '#8A8480' }}
     >
       {label}
     </button>
@@ -272,8 +272,8 @@ export function TopBar({
         gap:          8,
         paddingInline:20,
         height,
-        background:   '#14120E',
-        borderBottom: '1px solid rgba(255,255,255,0.10)',
+        background:   '#FEFCF8',
+        borderBottom: '1px solid rgba(0,0,0,0.08)',
         fontFamily:   'var(--font-ui)',
         flexShrink:   0,
         ...style,
@@ -298,14 +298,14 @@ export function TopBar({
 
       {/* Divider */}
       {showLogo && (
-        <span style={{ color: 'rgba(255,255,255,0.06)', flexShrink: 0 }}>│</span>
+        <span style={{ color: 'rgba(0,0,0,0.12)', flexShrink: 0 }}>│</span>
       )}
 
       {/* Page title */}
       <div
         style={{
           fontSize:       12,
-          color:          '#5A5854',
+          color:          '#6A6560',
           flexShrink:     0,
           maxWidth:       200,
           overflow:       'hidden',
@@ -323,13 +323,13 @@ export function TopBar({
           padding:     '2px 8px',
           borderRadius:20,
           letterSpacing:'0.06em',
-          background:  pageStatus === 'published' ? 'rgba(74,222,128,0.1)' : 'rgba(255,255,255,0.05)',
-          color:       pageStatus === 'published' ? '#4ade80' : '#5A5854',
-          border:      pageStatus === 'published' ? '1px solid rgba(74,222,128,0.2)' : '1px solid rgba(255,255,255,0.06)',
+          background:  pageStatus === 'published' ? 'rgba(34,197,94,0.1)' : 'rgba(0,0,0,0.05)',
+          color:       pageStatus === 'published' ? '#16a34a' : '#8A8480',
+          border:      pageStatus === 'published' ? '1px solid rgba(34,197,94,0.25)' : '1px solid rgba(0,0,0,0.08)',
           flexShrink:  0,
         }}
       >
-        {pageStatus}
+        {pageStatus === 'published' ? '公開済み' : pageStatus === 'draft' ? '下書き' : pageStatus}
       </span>
 
       {/* Dirty indicator */}
@@ -382,10 +382,10 @@ export function TopBar({
             alignItems:    'center',
             gap:           5,
             padding:       '5px 11px',
-            background:    aiOpen ? 'rgba(201,168,76,0.12)' : 'rgba(255,255,255,0.04)',
-            border:        aiOpen ? '1px solid rgba(201,168,76,0.3)' : '1px solid rgba(255,255,255,0.07)',
+            background:    aiOpen ? 'rgba(201,168,76,0.12)' : 'rgba(0,0,0,0.04)',
+            border:        aiOpen ? '1px solid rgba(201,168,76,0.35)' : '1px solid rgba(0,0,0,0.10)',
             borderRadius:  7,
-            color:         aiOpen ? '#C9A84C' : '#7A7870',
+            color:         aiOpen ? '#B8903C' : '#8A8480',
             cursor:        'pointer',
             fontSize:      11,
             fontFamily:    'var(--font-ui)',
@@ -434,15 +434,15 @@ export function TopBar({
           rel="noopener noreferrer"
           style={{
             fontSize:       11,
-            color:          '#7A7870',
+            color:          '#8A8480',
             textDecoration: 'none',
             padding:        '5px 11px',
-            border:         '1px solid rgba(255,255,255,0.07)',
+            border:         '1px solid rgba(0,0,0,0.10)',
             borderRadius:   7,
             flexShrink:     0,
           }}
         >
-          Preview
+          プレビュー
         </a>
       )}
 
@@ -460,15 +460,15 @@ export function TopBar({
           fontSize:     11,
           fontFamily:   'var(--font-ui)',
           cursor:       saving || !isDirty ? 'default' : 'pointer',
-          background:   isDirty && !saving ? 'rgba(201,168,76,0.1)' : 'rgba(255,255,255,0.04)',
-          border:       isDirty && !saving ? '1px solid rgba(201,168,76,0.25)' : '1px solid rgba(255,255,255,0.07)',
-          color:        isDirty && !saving ? '#C9A84C' : '#3A3834',
+          background:   isDirty && !saving ? 'rgba(201,168,76,0.1)' : 'rgba(0,0,0,0.03)',
+          border:       isDirty && !saving ? '1px solid rgba(201,168,76,0.35)' : '1px solid rgba(0,0,0,0.10)',
+          color:        isDirty && !saving ? '#B8903C' : '#BBBBBB',
           opacity:      saving ? 0.5 : 1,
           flexShrink:   0,
           transition:   'all 0.12s',
         }}
       >
-        {saving ? 'Saving…' : 'Save'}
+        {saving ? '保存中…' : '保存'}
       </button>
 
       {/* Publish */}
@@ -489,7 +489,7 @@ export function TopBar({
           flexShrink:   0,
         }}
       >
-        {publishing ? '…' : pageStatus === 'published' ? '更新' : 'Publish'}
+        {publishing ? '処理中…' : pageStatus === 'published' ? '更新' : '公開'}
       </button>
     </div>
   )
