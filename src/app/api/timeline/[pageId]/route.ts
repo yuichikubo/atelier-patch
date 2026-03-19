@@ -1,24 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient }             from '@supabase/supabase-js'
 
 type P = { params: { pageId: string } }
 
-function getClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url || !key) throw new Error('SUPABASE env vars not set')
-  return createClient(url, key)
+// ── Supabase (production) ──────────────────────────────────────────────────────
+async function supabaseGet(pageId: string) {
+  const { createClient } = await import('@supabase/supabase-js')
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY!
+  const { data } = await createClient(url, key)
+    .from('timelines')
+    .select('records')
+    .eq('page_id', pageId)
+    .single()
+  return data?.records ?? []
 }
+
+async function supabasePost(pageId: string, records: unknown[]) {
+  const { createClient } = await import('@supabase/supabase-js')
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY!
+  await createClient(url, key)
+    .from('timelines')
+    .upsert({ page_id: pageId, records, updated_at: new Date().toISOString() }, { onConflict: 'page_id' })
+}
+
+// ── Local fs (development) ─────────────────────────────────────────────────────
+async function fsGet(pageId: string) {
+  const { TimelineRepository } = await import('@/system/timeline/TimelineRepository')
+  return TimelineRepository.load(pageId)
+}
+
+async function fsPost(pageId: string, records: unknown[]) {
+  const { TimelineRepository } = await import('@/system/timeline/TimelineRepository')
+  TimelineRepository.save(pageId, records as never)
+}
+
+// ── Route handlers ─────────────────────────────────────────────────────────────
+const useSupabase = !!process.env.NEXT_PUBLIC_SUPABASE_URL
 
 export async function GET(_req: NextRequest, { params }: P): Promise<NextResponse> {
   try {
-    const { data } = await getClient()
-      .from('timelines')
-      .select('records')
-      .eq('page_id', params.pageId)
-      .single()
-    return NextResponse.json(data?.records ?? [])
-  } catch {
+    const records = useSupabase ? await supabaseGet(params.pageId) : await fsGet(params.pageId)
+    return NextResponse.json(records)
+  } catch (e) {
+    console.error('[GET /api/timeline]', e)
     return NextResponse.json([])
   }
 }
@@ -29,9 +54,11 @@ export async function POST(req: NextRequest, { params }: P): Promise<NextRespons
     if (!Array.isArray(records)) {
       return NextResponse.json({ error: 'Expected array' }, { status: 400 })
     }
-    await getClient()
-      .from('timelines')
-      .upsert({ page_id: params.pageId, records, updated_at: new Date().toISOString() }, { onConflict: 'page_id' })
+    if (useSupabase) {
+      await supabasePost(params.pageId, records)
+    } else {
+      await fsPost(params.pageId, records)
+    }
     return NextResponse.json({ ok: true })
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
