@@ -74,111 +74,111 @@ export const blockTypes: BlockTypeDefinition[] = [
 
   {
     type:        'hero',
-    label:       'Hero',
+    label:       'ヒーロー',
     icon:        '✦',
     category:    'layout',
-    description: 'Full-width headline section with subtitle, CTA button, and optional background image.',
+    description: 'ページ最上部の大見出しエリア。キャッチコピー・サブテキスト・CTAボタン・背景画像を設定できます。',
     defaultContent: {
-      title:      'Your Headline',
-      subtitle:   'Supporting text that explains your value proposition.',
-      buttonText: 'Get Started',
+      title:      'キャッチコピーをここに入力',
+      subtitle:   'サービスの価値や特徴を一文で説明するサブテキスト。',
+      buttonText: '始める',
       buttonUrl:  '#',
       imageUrl:   '',
     },
-    keywords: ['header', 'banner', 'headline', 'top', 'landing', 'above-fold'],
+    keywords: ['hero', 'header', 'banner', 'headline', 'キャッチ', 'トップ', 'ヒーロー'],
   },
 
   // ── Content ────────────────────────────────────────────────────────────────
 
   {
     type:        'text',
-    label:       'Text',
+    label:       'テキスト',
     icon:        '✎',
     category:    'content',
-    description: 'A block of body copy. Supports plain text, Markdown, and HTML.',
+    description: '本文テキストブロック。プレーンテキスト・Markdown・HTMLに対応しています。',
     defaultContent: {
-      text:   'Your content here. Click to edit.',
+      text:   'ここにテキストを入力してください。クリックして編集できます。',
       format: 'plain',
     },
-    keywords: ['paragraph', 'copy', 'body', 'prose', 'markdown', 'html', 'write'],
+    keywords: ['text', 'paragraph', 'body', 'markdown', 'テキスト', '本文', '段落'],
   },
 
   {
     type:        'cta',
-    label:       'CTA',
+    label:       '行動促進（CTA）',
     icon:        '→',
     category:    'content',
-    description: 'Call-to-action block with headline, description, and one or two buttons.',
+    description: '行動を促すブロック。見出し・説明文・ボタン（最大2つ）を配置できます。',
     defaultContent: {
-      headline:       'Ready to get started?',
+      headline:       'さっそく始めてみましょう',
       description:    '',
-      primaryText:    'Start Now',
+      primaryText:    '今すぐ始める',
       primaryUrl:     '#',
       secondaryText:  '',
       secondaryUrl:   '',
     },
-    keywords: ['call to action', 'button', 'cta', 'conversion', 'signup', 'action'],
+    keywords: ['cta', 'call to action', 'button', 'ボタン', 'CTA', '申し込み', '登録'],
   },
 
   {
     type:        'faq',
-    label:       'FAQ',
+    label:       'よくある質問（FAQ）',
     icon:        '?',
     category:    'content',
-    description: 'Collapsible question and answer item. Stack multiples for a full FAQ section.',
+    description: '開閉できる質問と回答のブロック。複数並べてFAQセクションが作れます。',
     defaultContent: {
-      question: 'What is your question?',
-      answer:   'Your answer goes here.',
+      question: 'よくある質問をここに入力してください',
+      answer:   '回答をここに入力してください。',
       open:     false,
     },
-    keywords: ['question', 'answer', 'accordion', 'collapse', 'expand', 'faq', 'help'],
+    keywords: ['faq', 'question', 'answer', 'よくある質問', '質問', '回答', 'アコーディオン'],
   },
 
   {
     type:        'feature-list',
-    label:       'Feature List',
+    label:       '特徴・サービス一覧',
     icon:        '⊞',
     category:    'content',
-    description: 'A grid or list of features, each with an icon, title, and description.',
+    description: 'アイコン・タイトル・説明文付きの特徴カード。グリッド表示でサービス紹介に最適です。',
     defaultContent: {
       features: [
-        { icon: '✦', title: 'Feature One',   description: 'Describe this feature.' },
-        { icon: '◈', title: 'Feature Two',   description: 'Describe this feature.' },
-        { icon: '▣', title: 'Feature Three', description: 'Describe this feature.' },
+        { icon: '✦', title: '特徴 1', description: 'この特徴の説明文を入力してください。' },
+        { icon: '◈', title: '特徴 2', description: 'この特徴の説明文を入力してください。' },
+        { icon: '▣', title: '特徴 3', description: 'この特徴の説明文を入力してください。' },
       ],
       layout: 'grid',
     },
-    keywords: ['features', 'benefits', 'grid', 'cards', 'icons', 'list', 'services'],
+    keywords: ['feature', 'features', 'benefits', 'grid', '特徴', 'サービス', '強み', 'カード'],
   },
 
   // ── Media ──────────────────────────────────────────────────────────────────
 
   {
     type:        'image',
-    label:       'Image',
+    label:       '画像',
     icon:        '🖼',
     category:    'media',
-    description: 'A single image with alt text and optional caption.',
+    description: '1枚の画像ブロック。altテキストとキャプションを設定できます。',
     defaultContent: {
       url:     '',
       alt:     '',
       caption: '',
     },
-    keywords: ['photo', 'picture', 'img', 'illustration', 'figure', 'caption'],
+    keywords: ['image', 'photo', 'picture', '画像', '写真', 'イメージ'],
   },
 
   {
     type:        'gallery',
-    label:       'Gallery',
+    label:       'ギャラリー',
     icon:        '▣',
     category:    'media',
-    description: 'A responsive multi-column image grid.',
+    description: '複数枚の画像をグリッド表示するギャラリーブロック。列数を調整できます。',
     defaultContent: {
       images:  [],
       columns: 3,
       gap:     '16px',
     },
-    keywords: ['photos', 'images', 'grid', 'mosaic', 'portfolio', 'pictures'],
+    keywords: ['gallery', 'photos', 'images', 'ギャラリー', '写真一覧', 'ポートフォリオ'],
   },
 ]
 

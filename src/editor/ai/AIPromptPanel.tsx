@@ -396,9 +396,48 @@ export function AIPromptPanel({ onClose, anchorStyle }: AIPromptPanelProps) {
           }}
         />
 
+        {/* Prompt templates */}
+        {state === 'idle' && !prompt && (
+          <div style={{ marginTop:10 }}>
+            <div style={{ fontSize:9, color:'#4A4844', letterSpacing:'0.08em', marginBottom:6 }}>テンプレート</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
+              {[
+                'このページ全体をランディングページとして生成して',
+                'ヒーローセクションを追加して',
+                'お客様の声を3件追加して',
+                'よくある質問（FAQ）を3問作って',
+                'お問い合わせCTAを追加して',
+                '文章をより説得力のある表現に書き直して',
+              ].map(t => (
+                <button
+                  key={t}
+                  onClick={() => setPrompt(t)}
+                  style={{
+                    textAlign:    'left',
+                    background:   'rgba(255,255,255,0.03)',
+                    border:       '1px solid rgba(255,255,255,0.06)',
+                    borderRadius: 6,
+                    padding:      '6px 10px',
+                    color:        '#7A7870',
+                    fontSize:     10,
+                    fontFamily:   'var(--font-ui)',
+                    cursor:       'pointer',
+                    lineHeight:   1.4,
+                    transition:   'background 0.1s, color 0.1s',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.07)'; (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)'; (e.currentTarget as HTMLElement).style.color = '#7A7870' }}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Generate button row */}
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:10, gap:8 }}>
-          <span style={{ fontSize:9, color:'#3A3834', letterSpacing:'0.04em' }}>⌘↵ to generate</span>
+          <span style={{ fontSize:9, color:'#3A3834', letterSpacing:'0.04em' }}>⌘↵ で生成</span>
           <div style={{ display:'flex', gap:6, alignItems:'center' }}>
             {isBusy && (
               <button
